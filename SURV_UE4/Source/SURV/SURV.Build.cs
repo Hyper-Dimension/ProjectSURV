@@ -7,8 +7,15 @@ public class SURV : ModuleRules
 	public SURV(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PrivatePCHHeaderFile = "Public/SURV.h";
+
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore",
+			"NavigationSystem"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

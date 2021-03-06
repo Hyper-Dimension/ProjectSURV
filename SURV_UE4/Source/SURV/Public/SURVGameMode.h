@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
-#include "SURVGameModeBase.generated.h"
+#include "GameFramework/GameMode.h"
+#include "SURVGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURV_API ASURVGameModeBase : public AGameModeBase
+class SURV_API ASURVGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
