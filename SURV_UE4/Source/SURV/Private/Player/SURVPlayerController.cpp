@@ -8,6 +8,9 @@
 #include "Interfaces/SURVSelectionInterface.h"
 #include "SURVGameMode.h"
 #include "Interfaces/SURVInputInterface.h"
+#include "Pawns/SURVSpectatorPawn.h"
+#include "Pawns/SURVCameraComponent.h"
+#include "Engine/LocalPlayer.h"
 
 ASURVPlayerController::ASURVPlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -48,6 +51,17 @@ void ASURVPlayerController::ProcessPlayerInput(const float DeltaTime, const bool
 
 	Super::ProcessPlayerInput(DeltaTime, bGamePaused);
 	
+	if (!bIgnoreInput)
+	{
+		const ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(Player);
+		ASURVSpectatorPawn* SURVSpectatorPawn = GetSURVSpectatorPawn();
+		if (SURVSpectatorPawn != NULL && LocalPlayer != NULL)
+		{
+			//	TODO: Here is no minimap for SURV, you can get it back from StrategyGame
+			//	only update camera movement
+			SURVSpectatorPawn->GetSURVCameraComponent()->UpdateCameraMovement(this);
+		}
+	}
 }
 
 uint8 ASURVPlayerController::GetTeamNum() const
@@ -126,5 +140,20 @@ AActor* ASURVPlayerController::GetFriendlyTarget(const FVector2D& ScreenPoint, F
 	}
 
 	return NULL;
+}
+
+ASURVSpectatorPawn* ASURVPlayerController::GetSURVSpectatorPawn() const
+{
+	return Cast<ASURVSpectatorPawn>(GetSpectatorPawn());
+}
+
+USURVCameraComponent* ASURVPlayerController::GetCameraComponent() const
+{
+	USURVCameraComponent* CameraComponent = NULL;
+	if (GetSURVSpectatorPawn() != NULL)
+	{
+		CameraComponent = GetSURVSpectatorPawn()->GetSURVCameraComponent();
+	}
+	return CameraComponent;
 }
 

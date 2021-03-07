@@ -63,4 +63,12 @@ protected:
 	 * @param	WorldPoint	Point in the world the screen coordinates projected onto.
 	 */
 	AActor* GetFriendlyTarget(const FVector2D& ScreenPoint, FVector& WorldPoint) const;
+
+private:
+	/** Helper to return cast version of Spectator pawn. */
+	class ASURVSpectatorPawn* GetSURVSpectatorPawn() const;
+
+	/** Helper to return camera component via spectator pawn */
+	class USURVCameraComponent* GetCameraComponent() const;
+	
 };

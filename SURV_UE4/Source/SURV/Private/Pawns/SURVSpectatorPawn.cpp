@@ -19,12 +19,12 @@ ASURVSpectatorPawn::ASURVSpectatorPawn(const FObjectInitializer& ObjectInitializ
 
 void ASURVSpectatorPawn::MoveForward(float Val)
 {
-	
+	SURVCameraComponent->MoveForward(Val);
 }
 
 void ASURVSpectatorPawn::MoveRight(float Val)
 {
-	
+	SURVCameraComponent->MoveRight(Val);
 }
 
 void ASURVSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -40,12 +40,12 @@ void ASURVSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 void ASURVSpectatorPawn::OnMouseScrollUp()
 {
-	
+	SURVCameraComponent->OnZoomIn();
 }
 
 void ASURVSpectatorPawn::OnMouseScrollDown()
 {
-
+	SURVCameraComponent->OnZoomOut();
 }
 
 USURVCameraComponent* ASURVSpectatorPawn::GetSURVCameraComponent()
