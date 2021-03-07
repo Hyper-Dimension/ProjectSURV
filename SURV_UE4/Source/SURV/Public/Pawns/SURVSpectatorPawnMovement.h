@@ -12,6 +12,11 @@
 UCLASS()
 class SURV_API USURVSpectatorPawnMovement : public USpectatorPawnMovement
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
+
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+private:
+	bool bInitialLocationSet;
 };

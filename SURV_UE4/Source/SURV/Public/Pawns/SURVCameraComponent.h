@@ -47,40 +47,57 @@ public:
 	void MoveRight(float Val);
 
 	/*
-	 *	Exclude an area from the mouse scroll movement update. (This will be reset at the end of each update) 
+	 *	Exclude an area from the mouse scroll movement update. (This will be reset at the end of each update)
 	 *
 	 *	@param	InCoords
 	 */
-	 void AddNoScrollZone(FBox InCoords);
+	void AddNoScrollZone(FBox InCoords);
 
+	/*
+	 *	Clamp the Camera location
+	 *
+	 *	@param	InPlayerController	The player controller relative to this component.
+	 *	@param	OutCameraLocation	Structure to receive the clamped coordinates.
+	 */
+	void ClampCameraLocation(const APlayerController* InPlayerController, FVector& OutCameraLocation);
 
 	/** Minimum amount of camera zoom (How close we can get the map). */
 	UPROPERTY(config)
-	float MinZoomLevel;
+		float MinZoomLevel;
 
 	/** Maxmum amount of camera zoom (How far we can get to the map) */
 	UPROPERTY(config)
-	float MaxZoomLevel;
+		float MaxZoomLevel;
 
 	/** The minimum offset of the camera */
 	UPROPERTY(config)
-	float MinCameraOffset;
+		float MinCameraOffset;
 
 	/** The maxmum offset of the camera */
 	UPROPERTY(config)
-	float MaxCameraOffset;
+		float MaxCameraOffset;
 
 	/** The angle to look down on the map */
 	UPROPERTY(config)
-	FRotator FixedCameraAngle;
+		FRotator FixedCameraAngle;
 
 	/** How fast the camera moves around when the mouse is at the edge of the screen. */
 	UPROPERTY(config)
-	float CameraScrollSpeed;
+		float CameraScrollSpeed;
 
 	/** Size of the area at the edge of the screen that will trigger camera scrolling. */
 	UPROPERTY(config)
-	uint32 CameraActiveBorder;
+		uint32 CameraActiveBorder;
+
+	/** If set, camera position will be clamped to movement bounds. */
+	UPROPERTY(config)
+	uint8 bShouldClampCamera : 1;
+
+	/** Bounds for camera movement. */
+	FBox CameraMovementBounds;
+
+	/** Viewport size associated with camera bounds. */
+	FVector2D CameraMovementViewportSize;
 
 	/** Sets the desired zoom level; clamping if necessary */
 	void SetZoomLevel(float NewLevel);
@@ -91,6 +108,9 @@ private:
 
 	/** Return the player controller of the pawn that owns this component */
 	APlayerController* GetPlayerController();
+
+	/** Update the movement bounds of this component. */
+	void UpdateCameraBounds(const APlayerController* InPlayerController);
 
 	/** Current amount of camera zoom. */
 	float ZoomAlpha;

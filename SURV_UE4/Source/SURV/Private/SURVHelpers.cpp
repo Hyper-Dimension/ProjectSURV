@@ -5,7 +5,7 @@
 #include "Engine/LocalPlayer.h"
 #include "SceneView.h"
 
-bool SURVHelpers::DeprojectScreenToWorld(const FVector2D& ScreenPosition, class ULocalPlayer* Player, FVector& RayOrigin, FVector& RayDirection)
+bool FSURVHelpers::DeprojectScreenToWorld(const FVector2D& ScreenPosition, class ULocalPlayer* Player, FVector& RayOrigin, FVector& RayDirection)
 {
 	if (Player != NULL && Player->ViewportClient != NULL && Player->ViewportClient->Viewport != NULL && Player->PlayerController != NULL)
 	{
@@ -26,7 +26,7 @@ bool SURVHelpers::DeprojectScreenToWorld(const FVector2D& ScreenPosition, class 
 	return false;
 }
 
-FVector SURVHelpers::IntersectRayWithPlane(const FVector& RayOrigin, const FVector& RayDirection, const FPlane& Plane)
+FVector FSURVHelpers::IntersectRayWithPlane(const FVector& RayOrigin, const FVector& RayDirection, const FPlane& Plane)
 {
 	const FVector PlaneNormal = FVector(Plane.X, Plane.Y, Plane.Z);
 	const FVector PlaneOrigin = PlaneNormal * Plane.W;

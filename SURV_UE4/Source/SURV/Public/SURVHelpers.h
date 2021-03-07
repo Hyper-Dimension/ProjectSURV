@@ -7,7 +7,7 @@
 /**
  * 
  */
-class SURVHelpers
+class FSURVHelpers
 {
 public:
 	/** convert point in screen space to ray in world space */

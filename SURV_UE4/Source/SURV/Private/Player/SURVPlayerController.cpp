@@ -59,7 +59,10 @@ void ASURVPlayerController::ProcessPlayerInput(const float DeltaTime, const bool
 		{
 			//	TODO: Here is no minimap for SURV, you can get it back from StrategyGame
 			//	only update camera movement
-			SURVSpectatorPawn->GetSURVCameraComponent()->UpdateCameraMovement(this);
+			if (LocalPlayer->ViewportClient != NULL)
+			{
+				SURVSpectatorPawn->GetSURVCameraComponent()->UpdateCameraMovement(this);
+			}
 		}
 	}
 }

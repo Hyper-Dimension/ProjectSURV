@@ -7,6 +7,9 @@
 #include "Interfaces/SURVTeamInterface.h"
 #include "SURVPlayerController.generated.h"
 
+class ASURVSpectatorPawn;
+class USURVCameraComponent;
+
 /**
  * 
  */
@@ -66,9 +69,9 @@ protected:
 
 private:
 	/** Helper to return cast version of Spectator pawn. */
-	class ASURVSpectatorPawn* GetSURVSpectatorPawn() const;
+	ASURVSpectatorPawn* GetSURVSpectatorPawn() const;
 
 	/** Helper to return camera component via spectator pawn */
-	class USURVCameraComponent* GetCameraComponent() const;
+	USURVCameraComponent* GetCameraComponent() const;
 	
 };

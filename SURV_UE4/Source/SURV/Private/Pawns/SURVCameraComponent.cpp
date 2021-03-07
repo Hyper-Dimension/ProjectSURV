@@ -170,6 +170,18 @@ void USURVCameraComponent::AddNoScrollZone(FBox InCoords)
 	NoScrollZones.AddUnique(InCoords);
 }
 
+void USURVCameraComponent::ClampCameraLocation(const APlayerController* InPlayerController, FVector& OutCameraLocation)
+{
+	if (bShouldClampCamera)
+	{
+		UpdateCameraBounds(InPlayerController);
+		if (CameraMovementBounds.GetSize() != FVector::ZeroVector)
+		{
+			OutCameraLocation = CameraMovementBounds.GetClosestPointTo(OutCameraLocation);
+		}
+	}
+}
+
 void USURVCameraComponent::SetZoomLevel(float NewLevel)
 {
 	ZoomAlpha = FMath::Clamp(NewLevel, MinZoomLevel, MaxZoomLevel);
@@ -189,4 +201,37 @@ APlayerController* USURVCameraComponent::GetPlayerController()
 		Controller = Cast<APlayerController>(Owner->GetController());
 	}
 	return Controller;
+}
+
+void USURVCameraComponent::UpdateCameraBounds(const APlayerController* InPlayerController)
+{
+	ULocalPlayer* const LocalPlayer = Cast<ULocalPlayer>(InPlayerController->Player);
+	if (LocalPlayer != NULL || LocalPlayer->ViewportClient != NULL)
+	{
+		return;
+	}
+
+	FVector2D CurrentViewportSize;
+	LocalPlayer->ViewportClient->GetViewportSize(CurrentViewportSize);
+
+	//	calc frustum edge direction, from bottom left corner
+	if (CameraMovementBounds.GetSize() == FVector::ZeroVector || CurrentViewportSize != CameraMovementViewportSize)
+	{
+		//	calc frustum edge direction, from bottom left corner
+		const FVector FrustumRay2DDir = FVector(1,1,0).GetSafeNormal();
+		const FVector FrustumRay2DRight = FVector::CrossProduct(FrustumRay2DDir, FVector::UpVector);
+		const FQuat RotQuat(FrustumRay2DRight, FMath::DegreesToRadians(90.0f - InPlayerController->PlayerCameraManager->GetFOVAngle() * 0.5f));
+		const FVector FrustumRayDir = RotQuat.RotateVector(FrustumRay2DDir);
+
+		//	collect 3 world bounds' points and matching frustum rays (bottom left, top left, bottom right)
+		ASURVGameState const* const MyGameState = GetWorld()->GetGameState<ASURVGameState>();
+		if (MyGameState)
+		{
+			FBox const& WorldBounds = MyGameState->WorldBounds;
+			if (WorldBounds.GetSize() != FVector::ZeroVector)
+			{
+				//	TODO no mini map , get back from Strategy Game
+			}
+		}
+	}
 }
