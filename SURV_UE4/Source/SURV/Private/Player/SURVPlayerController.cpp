@@ -38,8 +38,15 @@ void ASURVPlayerController::SetupInputComponent()
 
 void ASURVPlayerController::UpdateRotation(float DeltaTime)
 {
-	Super::UpdateRotation(DeltaTime);
+	FRotator ViewRotation(0,0,0);
+	FRotator DeltaRot(0,0,0);
 
+	if (PlayerCameraManager)
+	{
+		PlayerCameraManager->ProcessViewRotation(DeltaTime, ViewRotation, DeltaRot);
+	}
+
+	SetControlRotation(ViewRotation);
 }
 
 void ASURVPlayerController::ProcessPlayerInput(const float DeltaTime, const bool bGamePaused)
