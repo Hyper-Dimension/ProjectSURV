@@ -99,12 +99,24 @@ void ASURVPlayerController::OnTapPressed(const FVector2D& ScreenPosition, float 
 
 void ASURVPlayerController::OnHoldPressed(const FVector2D& ScreenPosition, float DownTime)
 {
+	FVector WorldPosition(0.f);
+	AActor* const HitActor = GetFriendlyTarget(ScreenPosition, WorldPosition);
 
+	SetSelectedActor(HitActor, WorldPosition);
+
+	if (HitActor && HitActor->GetClass()->ImplementsInterface(USURVInputInterface::StaticClass()))
+	{
+		ISURVInputInterface::Execute_OnInputHold(HitActor);
+	}
 }
 
 void ASURVPlayerController::OnHoldReleased(const FVector2D& ScreenPosition, float DownTime)
 {
-
+	AActor* const Selected = SelectedActor.Get();
+	if (Selected && Selected->GetClass()->ImplementsInterface(USURVInputInterface::StaticClass()))
+	{
+		ISURVInputInterface::Execute_OnInputHoldReleased(Selected, DownTime);
+	}
 }
 
 void ASURVPlayerController::OnToggleInGameMenu()

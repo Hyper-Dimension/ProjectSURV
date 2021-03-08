@@ -22,4 +22,11 @@ class SURV_API ISURVInputInterface
 	/** receive input: tap */
 	UFUNCTION(BlueprintNativeEvent)
 	void OnInputTap();
+
+	/** receive input: hold */
+	UFUNCTION(BlueprintNativeEvent)
+	void OnInputHold();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnInputHoldReleased(float DownTime);
 };

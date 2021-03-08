@@ -35,6 +35,12 @@ public:
 	 */
 	static bool OnEnemyTeam(const AActor* ActorA, const AActor* ActorB);
 
+	/**
+	 *	Handle new player, skips pawn spawning.
+	 *	@param	NewPlayer
+	 */
+	void RestartPlayer(AController* NewPlayer) override;
+
 protected:
 
 };
