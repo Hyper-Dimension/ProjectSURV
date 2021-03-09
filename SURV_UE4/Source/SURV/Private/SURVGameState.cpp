@@ -6,5 +6,5 @@
 ASURVGameState::ASURVGameState(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
 {
-
+	MiniMapCamera = nullptr;
 }

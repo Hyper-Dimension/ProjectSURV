@@ -93,6 +93,10 @@ public:
 	UPROPERTY(config)
 	uint8 bShouldClampCamera : 1;
 
+	/** Percentage of minimap where center of camera can be placed. */
+	UPROPERTY(config)
+	float MiniMapBoundsLimit;
+
 	/** Bounds for camera movement. */
 	FBox CameraMovementBounds;
 

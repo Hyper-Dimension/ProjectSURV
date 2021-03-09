@@ -15,6 +15,8 @@ class SURV_API ASURVGameState : public AGameStateBase
 	GENERATED_UCLASS_BODY()
 
 public:
+	/** Mini map camera component, TODO no minimap only camera for surv game, you can get full back from Strategy Gmae */
+	TWeakObjectPtr<class ASURVMiniMapCapture> MiniMapCamera;
 	/** World bounds camera movement. */
 	FBox WorldBounds;
 	

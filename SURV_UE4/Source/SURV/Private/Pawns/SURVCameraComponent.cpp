@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "GameFramework/SpectatorPawn.h"
 #include "Pawns/SURVSpectatorPawnMovement.h"
+#include "SURVHelpers.h"
 
 USURVCameraComponent::USURVCameraComponent(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -17,6 +18,7 @@ USURVCameraComponent::USURVCameraComponent(const FObjectInitializer& ObjectIniti
 	CameraScrollSpeed = 4000.0f;
 	MinZoomLevel = 0.4f;
 	MaxZoomLevel = 1.0f;
+	MiniMapBoundsLimit = 0.8f;
 }
 
 void USURVCameraComponent::GetCameraView(float DeltaTime, FMinimalViewInfo& OutResult)
@@ -112,7 +114,7 @@ void USURVCameraComponent::UpdateCameraMovement(const APlayerController* InPlaye
 			}
 			else if (MouseY >= (ViewBottom - CameraActiveBorder) && MouseY <= ViewBottom)
 			{
-				const float delta = (MouseY - (ViewBottom - CameraActiveBorder)) / CameraActiveBorder;
+				const float delta = float(MouseY - (ViewBottom - CameraActiveBorder)) / CameraActiveBorder;
 				SpectatorCameraSpeed = delta * MaxSpeed;
 				MoveForward(-ScrollSpeed * delta);
 			}
@@ -137,7 +139,7 @@ void USURVCameraComponent::MoveForward(float Val)
 	if (OwnerPawn != NULL)
 	{
 		APlayerController* Controller = GetPlayerController();
-		if ( Val != 0.f && Controller != NULL)
+		if ( (Val != 0.f) && (Controller != NULL))
 		{
 			const FRotationMatrix R(Controller->PlayerCameraManager->GetCameraRotation());
 			const FVector WorldSpaceAccel = R.GetScaledAxis(EAxis::X) * 100.f;
@@ -154,7 +156,7 @@ void USURVCameraComponent::MoveRight(float Val)
 	if (OwnerPawn != NULL)
 	{
 		APlayerController* Controller = GetPlayerController();
-		if (Val != 0.f && Controller != NULL)
+		if ((Val != 0.f) && (Controller != NULL))
 		{
 			const FRotationMatrix R(Controller->PlayerCameraManager->GetCameraRotation());
 			const FVector WorldSpaceAccel = R.GetScaledAxis(EAxis::Y) * 100.f;
@@ -206,7 +208,7 @@ APlayerController* USURVCameraComponent::GetPlayerController()
 void USURVCameraComponent::UpdateCameraBounds(const APlayerController* InPlayerController)
 {
 	ULocalPlayer* const LocalPlayer = Cast<ULocalPlayer>(InPlayerController->Player);
-	if (LocalPlayer != NULL || LocalPlayer->ViewportClient != NULL)
+	if (LocalPlayer == NULL || LocalPlayer->ViewportClient == NULL)
 	{
 		return;
 	}
@@ -228,9 +230,36 @@ void USURVCameraComponent::UpdateCameraBounds(const APlayerController* InPlayerC
 		if (MyGameState)
 		{
 			FBox const& WorldBounds = MyGameState->WorldBounds;
+
 			if (WorldBounds.GetSize() != FVector::ZeroVector)
 			{
-				//	TODO no mini map , get back from Strategy Game
+				if (WorldBounds.GetSize() != FVector::ZeroVector)
+				{
+					const FVector WorldBoundPoints[] = {
+						FVector(WorldBounds.Min.X, WorldBounds.Min.Y, WorldBounds.Max.Z),
+						FVector(WorldBounds.Min.X, WorldBounds.Max.Y, WorldBounds.Max.Z),
+						FVector(WorldBounds.Max.X, WorldBounds.Min.Y, WorldBounds.Max.Z)
+					};
+					const FVector FrustumRays[] = {
+						FVector(FrustumRayDir.X, FrustumRayDir.Y, FrustumRayDir.Z),
+						FVector(FrustumRayDir.X, -FrustumRayDir.Y, FrustumRayDir.Z),
+						FVector(-FrustumRayDir.X, FrustumRayDir.Y, FrustumRayDir.Z)
+					};
+
+					//	get camera plane for intersections
+					const FPlane CameraPlane = FPlane(InPlayerController->GetFocalLocation(), FVector::UpVector);
+
+					//	get matching points on camera plane
+					const FVector CameraPlanePoints[3] = {
+						FSURVHelpers::IntersectRayWithPlane(WorldBoundPoints[0], FrustumRays[0], CameraPlane) * MiniMapBoundsLimit,
+						FSURVHelpers::IntersectRayWithPlane(WorldBoundPoints[1], FrustumRays[1], CameraPlane) * MiniMapBoundsLimit,
+						FSURVHelpers::IntersectRayWithPlane(WorldBoundPoints[2], FrustumRays[2], CameraPlane) * MiniMapBoundsLimit
+					};
+
+					//	create new bounds
+					CameraMovementBounds = FBox(CameraPlanePoints, 3);
+					CameraMovementViewportSize = CurrentViewportSize;
+				}
 			}
 		}
 	}

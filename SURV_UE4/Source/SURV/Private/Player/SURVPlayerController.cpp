@@ -11,6 +11,9 @@
 #include "Pawns/SURVSpectatorPawn.h"
 #include "Pawns/SURVCameraComponent.h"
 #include "Engine/LocalPlayer.h"
+#include "UI/SURVHUD.h"
+#include "SURVGameState.h"
+#include "Engine/World.h"
 
 ASURVPlayerController::ASURVPlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -64,8 +67,7 @@ void ASURVPlayerController::ProcessPlayerInput(const float DeltaTime, const bool
 		ASURVSpectatorPawn* SURVSpectatorPawn = GetSURVSpectatorPawn();
 		if (SURVSpectatorPawn != NULL && LocalPlayer != NULL)
 		{
-			//	TODO: Here is no minimap for SURV, you can get it back from StrategyGame
-			//	only update camera movement
+			//	skip draw minimap only update camera movement
 			if (LocalPlayer->ViewportClient != NULL)
 			{
 				SURVSpectatorPawn->GetSURVCameraComponent()->UpdateCameraMovement(this);

@@ -41,6 +41,6 @@ void USURVSpectatorPawnMovement::TickComponent(float DeltaTime, enum ELevelTick 
 		{
 			SpectatorPawn->GetSURVCameraComponent()->ClampCameraLocation(PlayerController, MyLocation);
 		}
-		UpdatedComponent->SetWorldLocation(MyLocation);
+		UpdatedComponent->SetWorldLocation(MyLocation, false);
 	}
 }

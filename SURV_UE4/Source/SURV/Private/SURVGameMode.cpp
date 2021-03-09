@@ -5,6 +5,7 @@
 #include "Player/SURVPlayerController.h"
 #include "Pawns/SURVSpectatorPawn.h"
 #include "SURVGameState.h"
+#include "UI/SURVHUD.h"
 
 ASURVGameMode::ASURVGameMode(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -13,6 +14,7 @@ ASURVGameMode::ASURVGameMode(const FObjectInitializer& ObjectInitializer)
 	SpectatorClass = ASURVSpectatorPawn::StaticClass();
 	DefaultPawnClass = ASURVSpectatorPawn::StaticClass();
 	GameStateClass = ASURVGameState::StaticClass();
+	HUDClass = ASURVHUD::StaticClass();
 }
 
 bool ASURVGameMode::OnFriendlyTeam(const AActor* ActorA, const AActor* ActorB)
@@ -40,7 +42,7 @@ void ASURVGameMode::RestartPlayer(AController* NewPlayer)
 		}
 		else
 		{
-			//UE_LOG(LogGame, Warning, TEXT("Player start not found, failed to restart player"));
+			UE_LOG(LogGame, Warning, TEXT("Player start not found, failed to restart player"));
 		}
 	}
 }
