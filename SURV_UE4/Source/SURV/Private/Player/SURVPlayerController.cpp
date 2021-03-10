@@ -54,7 +54,7 @@ void ASURVPlayerController::UpdateRotation(float DeltaTime)
 
 void ASURVPlayerController::ProcessPlayerInput(const float DeltaTime, const bool bGamePaused)
 {
-	if (bGamePaused && PlayerInput && InputHandler && !bIgnoreInput)
+	if (!bGamePaused && PlayerInput && InputHandler && !bIgnoreInput)
 	{
 		InputHandler->UpdateDetection(DeltaTime);
 	}
@@ -145,7 +145,10 @@ void ASURVPlayerController::SetSelectedActor(AActor* NewSelectedActor, const FVe
 			//	attempt to select new selection
 			if (NewSelectedActor && NewSelectedActor->GetClass()->ImplementsInterface(USURVSelectionInterface::StaticClass()))
 			{
-				SelectedActor = NewSelectedActor;
+				if (ISURVSelectionInterface::Execute_OnSelectionGained(NewSelectedActor))
+				{
+					SelectedActor = NewSelectedActor;
+				}
 			}
 		}
 	}

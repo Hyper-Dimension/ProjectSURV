@@ -41,6 +41,19 @@ public:
 	 */
 	void RestartPlayer(AController* NewPlayer) override;
 
+	/**
+	 *	Modify the damage we want to apply to an actor
+	 * 
+	 *	@param Damage			The damage
+	 *	@param DamageActor		The actor we wish to damage
+	 *	@param DamageEvent		The event that caused the damage
+	 *	@param EventInstigator	
+	 *	@param DamageCauser
+	 * 
+	 *  @returns The adjusted damage amount
+	 */
+	 virtual float ModifyDamage(float Damage, AActor* DamagedActor, struct FDamageEvent const DamageEvent, AController* EventInstigator, AActor* DamageCauser) const;
+
 protected:
 
 };

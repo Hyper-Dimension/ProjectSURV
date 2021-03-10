@@ -3,14 +3,14 @@
 #pragma once
 
 #include "SURVTypes.h"
-#include "GameFramework/GameStateBase.h"
+#include "GameFramework/GameState.h"
 #include "SURVGameState.generated.h"
 
 /**
  * 
  */
 UCLASS(config=Game)
-class SURV_API ASURVGameState : public AGameStateBase
+class SURV_API ASURVGameState : public AGameState
 {
 	GENERATED_UCLASS_BODY()
 
