@@ -152,6 +152,15 @@ void ASURVPlayerController::SetSelectedActor(AActor* NewSelectedActor, const FVe
 			}
 		}
 	}
+
+	if (NewSelectedActor != NULL)
+	{
+		UE_LOG(LogGame, Warning, TEXT("Select Actor: %s"), *NewSelectedActor->GetName());
+	}
+	else
+	{
+		UE_LOG(LogGame, Warning, TEXT("Select NULL"));
+	}
 }
 
 AActor* ASURVPlayerController::GetFriendlyTarget(const FVector2D& ScreenPoint, FVector& WorldPoint) const
