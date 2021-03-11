@@ -156,16 +156,6 @@ void ASURVPlayerController::OnTriggerAIAction()
 					UE_LOG(LogGame, Log, TEXT("AI action at location: %s"), *Hit.Location.ToString());
 					Selection->TriggerAIAction(Hit.Location);
 				}
-				//FVector RayOrigin, RayDirection;
-				//FSURVHelpers::DeprojectScreenToWorld(MousePosition, LocalPlayer, RayOrigin, RayDirection);
-
-				//UWorld* World = GetWorld();
-				//if (World)
-				//{
-				//	FHitResult Hit;
-				//	World->LineTraceSingleByChannel(Hit, RayOrigin, RayDirection * 100000.f, ECC_Visibility, FCollisionQueryParams::DefaultQueryParam);
-
-				//}
 			}
 		}
 	}
