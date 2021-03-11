@@ -151,7 +151,11 @@ void ASURVPlayerController::OnTriggerAIAction()
 
 				FHitResult Hit;
 				GetHitResultAtScreenPosition(MousePosition, COLLISION_PANCAMERA, FCollisionQueryParams::DefaultQueryParam, Hit);
-
+				if (Hit.bBlockingHit)
+				{
+					UE_LOG(LogGame, Log, TEXT("AI action at location: %s"), *Hit.Location.ToString());
+					Selection->TriggerAIAction(Hit.Location);
+				}
 				//FVector RayOrigin, RayDirection;
 				//FSURVHelpers::DeprojectScreenToWorld(MousePosition, LocalPlayer, RayOrigin, RayDirection);
 

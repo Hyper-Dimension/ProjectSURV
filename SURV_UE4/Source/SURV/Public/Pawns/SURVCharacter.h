@@ -50,6 +50,9 @@ public:
 	/** get max health */
 	UFUNCTION(BlueprintCallable, Category = Health)
 	int32 GetMaxHealth() const;
+
+	UFUNCTION(BlueprintNativeEvent, Category = AIAction)
+	void TriggerAIAction(const FVector& ActionLocation);
 protected:
 
 	/** team number */

@@ -80,6 +80,12 @@ int32 ASURVCharacter::GetMaxHealth() const
 	return GetClass()->GetDefaultObject<ASURVCharacter>()->GetHealth();
 }
 
+
+void ASURVCharacter::TriggerAIAction_Implementation(const FVector& ActionLocation)
+{
+	UE_LOG(LogGame, Log, TEXT("Trigger AI action from CPP"));
+}
+
 bool ASURVCharacter::OnSelectionLost_Implementation(const FVector& NewPosition, AActor* NewActor)
 {
 	//	TODO UNSELECTED
