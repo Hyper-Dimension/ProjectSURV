@@ -15,6 +15,7 @@
 #include "SURVGameState.h"
 #include "Engine/World.h"
 #include "Pawns/SURVCharacter.h"
+#include "SURVHelpers.h"
 
 ASURVPlayerController::ASURVPlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -138,6 +139,30 @@ void ASURVPlayerController::OnTriggerAIAction()
 		if (Selection && Selection->GetTeamNum() == GetTeamNum())
 		{
 			UE_LOG(LogGame, Log, TEXT("Trigger player team action"));
+
+			ULocalPlayer* const LocalPlayer = Cast<ULocalPlayer>(Player);
+			if (LocalPlayer && LocalPlayer->ViewportClient && LocalPlayer->ViewportClient->Viewport)
+			{
+				FVector2D MousePosition;
+				if (LocalPlayer->ViewportClient->GetMousePosition(MousePosition) == false)
+				{
+					return;
+				}
+
+				FHitResult Hit;
+				GetHitResultAtScreenPosition(MousePosition, COLLISION_PANCAMERA, FCollisionQueryParams::DefaultQueryParam, Hit);
+
+				//FVector RayOrigin, RayDirection;
+				//FSURVHelpers::DeprojectScreenToWorld(MousePosition, LocalPlayer, RayOrigin, RayDirection);
+
+				//UWorld* World = GetWorld();
+				//if (World)
+				//{
+				//	FHitResult Hit;
+				//	World->LineTraceSingleByChannel(Hit, RayOrigin, RayDirection * 100000.f, ECC_Visibility, FCollisionQueryParams::DefaultQueryParam);
+
+				//}
+			}
 		}
 	}
 }
