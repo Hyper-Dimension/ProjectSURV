@@ -39,6 +39,10 @@ public:
 
 	virtual uint8 GetTeamNum() const override;
 
+	/** set team number */
+	UFUNCTION(BlueprintCallable, Category = Team)
+	void SetTeamNum(uint8 NewTeamNum);
+
 	/** get current health */
 	UFUNCTION(BlueprintCallable, Category = Health)
 	int32 GetHealth() const;

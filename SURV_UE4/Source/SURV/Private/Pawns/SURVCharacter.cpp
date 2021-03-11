@@ -64,6 +64,12 @@ uint8 ASURVCharacter::GetTeamNum() const
 	return MyTeamNum;
 }
 
+
+void ASURVCharacter::SetTeamNum(uint8 NewTeamNum)
+{
+	MyTeamNum = NewTeamNum;
+}
+
 int32 ASURVCharacter::GetHealth() const
 {
 	return Health;

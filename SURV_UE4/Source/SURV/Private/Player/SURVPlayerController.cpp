@@ -14,6 +14,7 @@
 #include "UI/SURVHUD.h"
 #include "SURVGameState.h"
 #include "Engine/World.h"
+#include "Pawns/SURVCharacter.h"
 
 ASURVPlayerController::ASURVPlayerController(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer)
@@ -37,6 +38,8 @@ void ASURVPlayerController::SetupInputComponent()
 
 	FInputActionBinding& ToggleInGameMenuBinding = InputComponent->BindAction("InGameMenu", IE_Pressed, this, &ASURVPlayerController::OnToggleInGameMenu);
 	ToggleInGameMenuBinding.bExecuteWhenPaused = true;
+
+	InputComponent->BindAction("TriggerAIAction", IE_Pressed, this, &ASURVPlayerController::OnTriggerAIAction);
 }
 
 void ASURVPlayerController::UpdateRotation(float DeltaTime)
@@ -126,6 +129,19 @@ void ASURVPlayerController::OnToggleInGameMenu()
 	// UE_LOG(LogGame, Log, TEXT("Player Toggle In Game Menu"));
 }
 
+
+void ASURVPlayerController::OnTriggerAIAction()
+{
+	if (SelectedActor.IsValid())
+	{
+		ASURVCharacter* const Selection = Cast<ASURVCharacter>(SelectedActor.Get());
+		if (Selection && Selection->GetTeamNum() == GetTeamNum())
+		{
+			UE_LOG(LogGame, Log, TEXT("Trigger player team action"));
+		}
+	}
+}
+
 void ASURVPlayerController::SetSelectedActor(AActor* NewSelectedActor, const FVector& NewPosition)
 {
 	if (SelectedActor != NewSelectedActor)
@@ -151,15 +167,6 @@ void ASURVPlayerController::SetSelectedActor(AActor* NewSelectedActor, const FVe
 				}
 			}
 		}
-	}
-
-	if (NewSelectedActor != NULL)
-	{
-		UE_LOG(LogGame, Warning, TEXT("Select Actor: %s"), *NewSelectedActor->GetName());
-	}
-	else
-	{
-		UE_LOG(LogGame, Warning, TEXT("Select NULL"));
 	}
 }
 

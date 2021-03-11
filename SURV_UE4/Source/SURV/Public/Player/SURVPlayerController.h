@@ -40,6 +40,9 @@ public:
 
 	/** Toggles the ingame menu display. */
 	void OnToggleInGameMenu();
+
+	/** Trigger AI's main action, i.e. MoveTo, CancelAttack, etc..*/
+	void OnTriggerAIAction();
 protected:
 	/** if set, input and camera updates will be ignored */
 	uint8 bIgnoreInput : 1;
